@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ITLab2Class</class>
+ <widget class="QMainWindow" name="ITLab2Class">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>860</width>
+    <height>780</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>860</width>
+    <height>780</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Потоковое шифрование LFSR — Вариант 15</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow { background-color: #1e1e2e; }
+QLabel { color: #cdd6f4; font-size: 13px; font-weight: 500; }
+QTextEdit, QLineEdit { background-color: #313244; color: #cdd6f4; border: 2px solid #45475a; border-radius: 6px; padding: 8px; font-size: 12px; font-family: monospace; selection-background-color: #89b4fa; }
+QTextEdit:focus, QLineEdit:focus { border: 2px solid #89b4fa; }
+QPushButton { background-color: #89b4fa; color: #1e1e2e; border: none; border-radius: 6px; padding: 10px 20px; font-weight: bold; font-size: 13px; }
+QPushButton:hover { background-color: #b4befe; }
+QPushButton:pressed { background-color: #74c7ec; }
+QPushButton#btnLoad { background-color: #a6e3a1; color: #1e1e2e; }
+QPushButton#btnLoad:hover { background-color: #94e2d5; }
+QPushButton#btnSave { background-color: #a6e3a1; color: #1e1e2e; }
+QPushButton#btnSave:hover { background-color: #94e2d5; }
+QGroupBox { color: #89b4fa; font-weight: bold; font-size: 14px; border: 2px solid #313244; border-radius: 8px; margin-top: 12px; padding-top: 16px; }
+QGroupBox::title { subcontrol-origin: margin; left: 12px; padding: 0 8px; }
+QProgressBar { border: 2px solid #45475a; border-radius: 6px; background-color: #313244; color: #cdd6f4; text-align: center; font-weight: bold; font-size: 12px; }
+QProgressBar::chunk { background-color: #89b4fa; border-radius: 4px; }</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="mainLayout">
+    <property name="spacing">
+     <number>12</number>
+    </property>
+
+
+    <!-- Title -->
+    <item>
+     <widget class="QLabel" name="titleLabel">
+      <property name="styleSheet">
+       <string notr="true">font-size: 22px; font-weight: bold; color: #89b4fa; margin-bottom: 4px;</string>
+      </property>
+      <property name="text">
+       <string>Потоковое шифрование на основе LFSR</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+
+    <item>
+     <widget class="QLabel" name="subtitleLabel">
+      <property name="styleSheet">
+       <string notr="true">color: #6c7086; font-size: 11px;</string>
+      </property>
+      <property name="text">
+       <string>Вариант 15 · Многочлен: x³⁷ + x¹² + x¹⁰ + x² + 1 · Размерность регистра: 37 бит</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+
+    <!-- Input file group -->
+    <item>
+     <widget class="QGroupBox" name="groupInput">
+      <property name="title">
+       <string>Исходный файл</string>
+      </property>
+      <layout class="QVBoxLayout" name="inputGroupLayout">
+       <property name="spacing">
+        <number>8</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="loadRowLayout">
+         <item>
+          <widget class="QPushButton" name="btnLoad">
+           <property name="text">
+            <string>Загрузить файл</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblFileName">
+           <property name="styleSheet">
+            <string notr="true">color: #a6adc8; font-size: 12px; font-style: italic;</string>
+           </property>
+           <property name="text">
+            <string>Файл не загружен</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="spacerLoadRight">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTextEdit" name="teInput">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="maximumHeight">
+          <number>90</number>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #1e1e2e; font-family: monospace; font-size: 11px;</string>
+         </property>
+         <property name="placeholderText">
+          <string>Здесь отобразятся биты исходного файла...</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+
+    <!-- Register state group -->
+    <item>
+     <widget class="QGroupBox" name="groupRegState">
+      <property name="title">
+       <string>Начальное состояние регистра (37 бит)</string>
+      </property>
+      <layout class="QVBoxLayout" name="regGroupLayout">
+       <property name="spacing">
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QLineEdit" name="leRegState">
+         <property name="maxLength">
+          <number>37</number>
+         </property>
+         <property name="placeholderText">
+          <string>Введите 37 бит (только символы 0 и 1), например: 1010110100101110101011010010111010100</string>
+         </property>
+         <property name="font">
+          <font>
+           <family>Courier New</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lblRegLen">
+         <property name="styleSheet">
+          <string notr="true">color: #6c7086; font-size: 11px;</string>
+         </property>
+         <property name="text">
+          <string>0 / 37 бит</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+
+    <!-- Process button + progress bar row -->
+    <item>
+     <layout class="QHBoxLayout" name="processRowLayout">
+      <item>
+       <spacer name="spacerProcLeft">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnProcess">
+        <property name="text">
+         <string>Зашифровать / Расшифровать</string>
+        </property>
+        <property name="minimumWidth">
+         <number>240</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QProgressBar" name="progressBar">
+        <property name="minimumWidth">
+         <number>200</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+        <property name="format">
+         <string>%p%</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="spacerProcRight">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+
+    <!-- Key display group -->
+    <item>
+     <widget class="QGroupBox" name="groupKey">
+      <property name="title">
+       <string>Сгенерированная ключевая последовательность (биты)</string>
+      </property>
+      <layout class="QVBoxLayout" name="keyGroupLayout">
+       <item>
+        <widget class="QTextEdit" name="teKey">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="maximumHeight">
+          <number>90</number>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #1e1e2e; font-family: monospace; font-size: 11px;</string>
+         </property>
+         <property name="placeholderText">
+          <string>Здесь отобразится ключевая последовательность...</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+
+    <!-- Output display group -->
+    <item>
+     <widget class="QGroupBox" name="groupOutput">
+      <property name="title">
+       <string>Результат (биты)</string>
+      </property>
+      <layout class="QVBoxLayout" name="outputGroupLayout">
+       <item>
+        <widget class="QTextEdit" name="teOutput">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="maximumHeight">
+          <number>90</number>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #1e1e2e; font-family: monospace; font-size: 11px;</string>
+         </property>
+         <property name="placeholderText">
+          <string>Здесь отобразятся биты результата (зашифрованного / расшифрованного файла)...</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="saveRowLayout">
+         <item>
+          <spacer name="spacerSaveLeft">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnSave">
+           <property name="text">
+            <string>Сохранить результат</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+
+    <!-- Status bar -->
+    <item>
+     <widget class="QLabel" name="statusLabel">
+      <property name="styleSheet">
+       <string notr="true">color: #6c7086; font-size: 11px; padding-top: 2px;</string>
+      </property>
+      <property name="text">
+       <string>Система готова</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
